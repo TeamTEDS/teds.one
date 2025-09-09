@@ -14,8 +14,8 @@ import {
   Scroller,
   Card,
   Line,
-  RevealFx,,
-  Row,
+  RevealFx,
+  Flex,
 } from "@once-ui-system/core";
 import { baseURL, about, person, social, teds, dov, people } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
@@ -227,7 +227,14 @@ export default function About() {
                     <Row gap="16">
                       {people.map(
                         (member) => member.name && (
-                        <Card radius="l-4" direction="column" border="neutral-alpha-medium">
+                                        <Card 
+                                          radius="l-4" 
+                                          direction="column" 
+                                          border="neutral-alpha-medium"
+                                          aspectRatio="1 / 1.5"
+                                          minWidth={12}
+                                          maxWidth={12}
+                                        >
                           {/* <Row fillWidth paddingX="20" paddingY="12" gap="8" vertical="center">
                             <Text variant="label-default-s">{member.name}</Text>
                           </Row> */}
@@ -258,25 +265,27 @@ export default function About() {
                                 {member.socials.map(
                                   (item) => item.link && (
                                     <React.Fragment key={item.name}>
-                                      <Button
-                                        className="s-flex-hide"
-                                        key={item.name}
-                                                href={item.link}
-                                                prefixIcon={item.icon}
-                                                size="s"
-                                                weight="default"
-                                                variant="secondary"
-                                            />
-                                            <IconButton
-                                                className="s-flex-show"
-                                                size="m"
-                                                key={`${item.name}-icon`}
-                                                href={item.link}
-                                                icon={item.icon}
-                                                variant="secondary"
-                                            />
-                                        </React.Fragment>
-                                    ),
+                                      <Row s={{ hide: true }}>
+                                        <Button
+                                          key={item.name}
+                                          href={item.link}
+                                          prefixIcon={item.icon}
+                                          size="s"
+                                          weight="default"
+                                          variant="secondary"
+                                        />
+                                      </Row>
+                                      <Row hide s={{ hide: false }}>
+                                        <IconButton
+                                          size="m"
+                                          key={`${item.name}-icon`}
+                                          href={item.link}
+                                          icon={item.icon}
+                                          variant="secondary"
+                                        />
+                                      </Row>
+                                    </React.Fragment>
+                                  ),
                                 )}
                               </Flex>
                             )}
