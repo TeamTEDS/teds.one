@@ -1,9 +1,22 @@
-import { home } from "./content";
+import {
+  DataStyleConfig,
+  DisplayConfig,
+  EffectsConfig,
+  FontsConfig,
+  MailchimpConfig,
+  ProtectedRoutesConfig,
+  RoutesConfig,
+  SameAsConfig,
+  SchemaConfig,
+  SocialSharingConfig,
+  StyleConfig,
+} from "@/types";
+import { home } from "./index";
 
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
 const baseURL = "https://teds.one";
 
-const routes = {
+const routes: RoutesConfig = {
   "/": true,
   "/about": true,
   "/work": true,
@@ -11,15 +24,15 @@ const routes = {
   "/gallery": true,
 };
 
-const display = {
+const display: DisplayConfig = {
   location: true,
   time: true,
-  themeSwitcher: true
+  themeSwitcher: true,
 };
 
 // Enable password protection on selected routes
 // Set password in the .env file, refer to .env.example
-const protectedRoutes = {
+const protectedRoutes: ProtectedRoutesConfig = {
   "/work/automate-design-handovers-with-a-figma-to-code-pipeline": true,
 };
 
@@ -51,7 +64,7 @@ const code = Geist_Mono({
   display: "swap",
 });
 
-const fonts = {
+const fonts: FontsConfig = {
   heading: heading,
   body: body,
   label: label,
@@ -59,7 +72,7 @@ const fonts = {
 };
 
 // default customization applied to the HTML in the main layout.tsx
-const style = {
+const style: StyleConfig = {
   theme: "system", // dark | light | system
   neutral: "gray", // sand | gray | slate | custom
   brand: "red", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
@@ -69,10 +82,10 @@ const style = {
   border: "playful", // rounded | playful | conservative
   surface: "translucent", // filled | translucent
   transition: "all", // all | micro | macro
-  scaling: "100" // 90 | 95 | 100 | 105 | 110
+  scaling: "100", // 90 | 95 | 100 | 105 | 110
 };
 
-const dataStyle = {
+const dataStyle: DataStyleConfig = {
   variant: "gradient", // flat | gradient | outline
   mode: "categorical", // categorical | divergent | sequential
   height: 24, // default chart height
@@ -82,11 +95,11 @@ const dataStyle = {
   tick: {
     fill: "var(--neutral-on-background-weak)",
     fontSize: 11,
-    line: false
+    line: false,
   },
 };
 
-const effects = {
+const effects: EffectsConfig = {
   mask: {
     cursor: false,
     x: 50,
@@ -127,7 +140,7 @@ const effects = {
   },
 };
 
-const mailchimp = {
+const mailchimp: MailchimpConfig = {
   action: "https://url/subscribe/post?parameters",
   effects: {
     mask: {
@@ -168,11 +181,11 @@ const mailchimp = {
       thickness: 1,
       angle: 90,
     },
-  }
+  },
 };
 
 // default schema data
-const schema = {
+const schema: SchemaConfig = {
   logo: "",
   type: "Organization",
   name: "Once UI",
@@ -181,10 +194,39 @@ const schema = {
 };
 
 // social links
-const sameAs = {
+const sameAs: SameAsConfig = {
   threads: "https://www.threads.com/@once_ui",
   linkedin: "https://www.linkedin.com/company/once-ui/",
   discord: "https://discord.com/invite/5EyAQ4eNdS",
 };
 
-export { display, mailchimp, routes, protectedRoutes, baseURL, fonts, style, schema, sameAs, effects, dataStyle };
+// social sharing configuration for blog posts
+const socialSharing: SocialSharingConfig = {
+  display: true,
+  platforms: {
+    x: true,
+    linkedin: true,
+    facebook: false,
+    pinterest: false,
+    whatsapp: false,
+    reddit: false,
+    telegram: false,
+    email: true,
+    copyLink: true,
+  },
+};
+
+export {
+  display,
+  mailchimp,
+  routes,
+  protectedRoutes,
+  baseURL,
+  fonts,
+  style,
+  schema,
+  sameAs,
+  socialSharing,
+  effects,
+  dataStyle,
+};

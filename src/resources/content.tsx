@@ -1,4 +1,5 @@
-import { Logo } from "@once-ui-system/core";
+import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import { Line, Logo, Row, Text } from "@once-ui-system/core";
 
 const dov = {
   id: 0,
@@ -90,7 +91,7 @@ const people = [
 
 const person = teds;
 
-const newsletter = {
+const newsletter: Newsletter = {
   display: false,
   title: <>Subscribe to the TEDS Newsletter</>,
   description: (
@@ -100,7 +101,7 @@ const newsletter = {
   ),
 };
 
-const social = [
+const social: Social = [
   // Links are automatically displayed.
   // Import new icons in /once-ui/icons.ts
   {
@@ -115,7 +116,7 @@ const social = [
   },
 ];
 
-const home = {
+const home: Home = {
   path: "/",
   image: "/images/og/home.png",
   label: "Home",
@@ -124,7 +125,15 @@ const home = {
   headline: <>teds.one</>,
   featured: {
     display: false,
-    title: <>Recent project: <strong className="ml-4">Once UI</strong></>,
+    title: (
+      <Row gap="12" vertical="center">
+        <strong className="ml-4">Once UI</strong>{" "}
+        <Line background="brand-alpha-strong" vert height="20" />
+        <Text marginRight="4" onBackground="brand-medium">
+          Featured work
+        </Text>
+      </Row>
+    ),
     href: "/work/building-once-ui-a-customizable-design-system",
   },
   subline: (
@@ -134,7 +143,7 @@ const home = {
   ),
 };
 
-const about = {
+const about: About = {
   path: "/about",
   label: "About",
   title: `About – ${teds.name}`,
@@ -225,7 +234,15 @@ const about = {
     skills: [
       {
         title: "Figma",
-        description: <>Able to prototype in Figma with Once UI with unnatural speed.</>,
+        description: (
+          <>Able to prototype in Figma with Once UI with unnatural speed.</>
+        ),
+        tags: [
+          {
+            name: "Figma",
+            icon: "figma",
+          },
+        ],
         // optional: leave the array empty if you don't want to display images
         images: [
           {
@@ -244,7 +261,23 @@ const about = {
       },
       {
         title: "Next.js",
-        description: <>Building next gen apps with Next.js + Once UI + Supabase.</>,
+        description: (
+          <>Building next gen apps with Next.js + Once UI + Supabase.</>
+        ),
+        tags: [
+          {
+            name: "JavaScript",
+            icon: "javascript",
+          },
+          {
+            name: "Next.js",
+            icon: "nextjs",
+          },
+          {
+            name: "Supabase",
+            icon: "supabase",
+          },
+        ],
         // optional: leave the array empty if you don't want to display images
         images: [
           {
@@ -254,12 +287,12 @@ const about = {
             height: 9,
           },
         ],
-      },
+      },  
     ],
   },
 };
 
-const blog = {
+const blog: Blog = {
   path: "/blog",
   label: "Blog",
   title: `Articles from ${teds.name}`,
@@ -268,7 +301,7 @@ const blog = {
   // All posts will be listed on the /blog route
 };
 
-const work = {
+const work: Work = {
   path: "/work",
   label: "Work",
   title: `Projects – ${teds.name}`,
@@ -277,7 +310,7 @@ const work = {
   // All projects will be listed on the /home and /work routes
 };
 
-const gallery = {
+const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
   title: `Photo gallery – ${teds.name}`,
@@ -291,17 +324,12 @@ const gallery = {
       orientation: "horizontal",
     },
     {
-      src: "/images/gallery/horizontal-2.jpg",
+      src: "/images/gallery/vertical-4.jpg",
       alt: "image",
-      orientation: "horizontal",
+      orientation: "vertical",
     },
     {
       src: "/images/gallery/horizontal-3.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-4.jpg",
       alt: "image",
       orientation: "horizontal",
     },
@@ -316,12 +344,17 @@ const gallery = {
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/vertical-3.jpg",
+      src: "/images/gallery/horizontal-2.jpg",
       alt: "image",
-      orientation: "vertical",
+      orientation: "horizontal",
     },
     {
-      src: "/images/gallery/vertical-4.jpg",
+      src: "/images/gallery/horizontal-4.jpg",
+      alt: "image",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/vertical-3.jpg",
       alt: "image",
       orientation: "vertical",
     },

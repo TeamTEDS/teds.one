@@ -1,7 +1,8 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { ReactNode } from "react";
+import { slugify as transliterate } from "transliteration";
 
-import { 
+import {
   Heading,
   HeadingLink,
   Text,
@@ -21,6 +22,9 @@ import {
   Icon,
   Media,
   SmartLink,
+  List,
+  ListItem,
+  Line,
 } from "@once-ui-system/core";
 
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -64,7 +68,6 @@ function createImage({ alt, src, ...props }: MediaProps & { src: string }) {
       marginBottom="16"
       enlarge
       radius="m"
-      aspectRatio="16 / 9"
       border="neutral-alpha-medium"
       sizes="(max-width: 960px) 100vw, 960px"
       alt={alt}
@@ -75,25 +78,21 @@ function createImage({ alt, src, ...props }: MediaProps & { src: string }) {
 }
 
 function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+  const strWithAnd = str.replace(/&/g, " and "); // Replace & with 'and'
+  return transliterate(strWithAnd, {
+    lowercase: true,
+    separator: "-", // Replace spaces with -
+  }).replace(/\-\-+/g, "-"); // Replace multiple - with single -
 }
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
-  const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, 'as' | 'id'>) => {
+  const CustomHeading = ({
+    children,
+    ...props
+  }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
     const slug = slugify(children as string);
     return (
-      <HeadingLink
-        marginTop="24"
-        marginBottom="12"
-        as={as}
-        id={slug}
-        {...props}
-      >
+      <HeadingLink marginTop="24" marginBottom="12" as={as} id={slug} {...props}>
         {children}
       </HeadingLink>
     );
@@ -126,11 +125,11 @@ function createCodeBlock(props: any) {
   // For pre tags that contain code blocks
   if (props.children && props.children.props && props.children.props.className) {
     const { className, children } = props.children.props;
-    
+
     // Extract language from className (format: language-xxx)
-    const language = className.replace('language-', '');
+    const language = className.replace("language-", "");
     const label = language.charAt(0).toUpperCase() + language.slice(1);
-    
+
     return (
       <CodeBlock
         marginTop="8"
@@ -139,16 +138,36 @@ function createCodeBlock(props: any) {
           {
             code: children,
             language,
-            label
-          }
+            label,
+          },
         ]}
         copyButton={true}
       />
     );
   }
-  
+
   // Fallback for other pre tags or empty code blocks
   return <pre {...props} />;
+}
+
+function createList({ children }: { children: ReactNode }) {
+  return <List>{children}</List>;
+}
+
+function createListItem({ children }: { children: ReactNode }) {
+  return (
+    <ListItem marginTop="4" marginBottom="8" style={{ lineHeight: "175%" }}>
+      {children}
+    </ListItem>
+  );
+}
+
+function createHR() {
+  return (
+    <Row fillWidth horizontal="center">
+      <Line maxWidth="40" />
+    </Row>
+  );
 }
 
 const components = {
@@ -163,6 +182,10 @@ const components = {
   a: CustomLink as any,
   code: createInlineCode as any,
   pre: createCodeBlock as any,
+  ol: createList as any,
+  ul: createList as any,
+  li: createListItem as any,
+  hr: createHR as any,
   Heading,
   Text,
   CodeBlock,
@@ -186,7 +209,5 @@ type CustomMDXProps = MDXRemoteProps & {
 };
 
 export function CustomMDX(props: CustomMDXProps) {
-  return (
-    <MDXRemote {...props} components={{ ...components, ...(props.components || {}) }} />
-  );
+  return <MDXRemote {...props} components={{ ...components, ...(props.components || {}) }} />;
 }

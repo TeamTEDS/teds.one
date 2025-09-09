@@ -1,10 +1,26 @@
 import { notFound } from "next/navigation";
 import { CustomMDX, ScrollToHash } from "@/components";
-import { Meta, Schema, AvatarGroup, Button, Column, Heading, HeadingNav, Icon, Row, Text } from "@once-ui-system/core";
-import { baseURL, about, blog, teds, dov } from "@/resources";
+import {
+  Meta,
+  Schema,
+  Column,
+  Heading,
+  HeadingNav,
+  Icon,
+  Row,
+  Text,
+  SmartLink,
+  Avatar,
+  Media,
+  Line,
+} from "@once-ui-system/core";
+import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
-import { Metadata } from 'next';
+import { Metadata } from "next";
+import React from "react";
+import { Posts } from "@/components/blog/Posts";
+import { ShareSection } from "@/components/blog/ShareSection";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "blog", "posts"]);
@@ -19,9 +35,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const slugPath = Array.isArray(routeParams.slug)
+    ? routeParams.slug.join("/")
+    : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "blog", "posts"])
+  const posts = getPosts(["src", "app", "blog", "posts"]);
   let post = posts.find((post) => post.slug === slugPath);
 
   if (!post) return {};
@@ -35,11 +53,11 @@ export async function generateMetadata({
   });
 }
 
-export default async function Blog({
-  params
-}: { params: Promise<{ slug: string | string[] }> }) {
+export default async function Blog({ params }: { params: Promise<{ slug: string | string[] }> }) {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const slugPath = Array.isArray(routeParams.slug)
+    ? routeParams.slug.join("/")
+    : routeParams.slug || "";
 
   let post = getPosts(["src", "app", "blog", "posts"]).find((post) => post.slug === slugPath);
 
@@ -54,9 +72,9 @@ export default async function Blog({
 
   return (
     <Row fillWidth>
-      <Row maxWidth={12} hide="m"/>
+      <Row maxWidth={12} m={{ hide: true }} />
       <Row fillWidth horizontal="center">
-        <Column as="section" maxWidth="xs" gap="l">
+        <Column as="section" maxWidth="m" horizontal="center" gap="l" paddingTop="24">
           <Schema
             as="blogPosting"
             baseURL={baseURL}
@@ -65,42 +83,86 @@ export default async function Blog({
             description={post.metadata.summary}
             datePublished={post.metadata.publishedAt}
             dateModified={post.metadata.publishedAt}
-            image={post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`}
+            image={
+              post.metadata.image ||
+              `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
+            }
             author={{
               name: dov.name,
               url: `${baseURL}${about.path}`,
               image: `${baseURL}${dov.avatar}`,
             }}
           />
-          <Button data-border="rounded" href="/blog" weight="default" variant="tertiary" size="s" prefixIcon="chevronLeft">
-            Posts
-          </Button>
-          <Heading variant="display-strong-s">{post.metadata.title}</Heading>
-          <Row gap="12" vertical="center">
-            {avatars.length > 0 && <AvatarGroup size="s" avatars={avatars} />}
-            <Text variant="body-default-s" onBackground="neutral-weak">
+          <Column maxWidth="s" gap="16" horizontal="center" align="center">
+            <SmartLink href="/blog">
+              <Text variant="label-strong-m">Blog</Text>
+            </SmartLink>
+            <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
               {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
             </Text>
+            <Heading variant="display-strong-m">{post.metadata.title}</Heading>
+          </Column>
+          <Row marginBottom="32" horizontal="center">
+            <Row gap="16" vertical="center">
+              <Avatar size="s" src={person.avatar} />
+              <Text variant="label-default-m" onBackground="brand-weak">
+                {person.name}
+              </Text>
+            </Row>
           </Row>
-          <Column as="article" fillWidth>
+          {post.metadata.image && (
+            <Media
+              src={post.metadata.image}
+              alt={post.metadata.title}
+              aspectRatio="16/9"
+              priority
+              sizes="(min-width: 768px) 100vw, 768px"
+              border="neutral-alpha-weak"
+              radius="l"
+              marginTop="12"
+              marginBottom="8"
+            />
+          )}
+          <Column as="article" maxWidth="s">
             <CustomMDX source={post.content} />
+          </Column>
+          
+          <ShareSection 
+            title={post.metadata.title} 
+            url={`${baseURL}${blog.path}/${post.slug}`} 
+          />
+
+          <Column fillWidth gap="40" horizontal="center" marginTop="40">
+            <Line maxWidth="40" />
+            <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
+              Recent posts
+            </Heading>
+            <Posts exclude={[post.slug]} range={[1, 2]} columns="2" thumbnail direction="column" />
           </Column>
           <ScrollToHash />
         </Column>
-    </Row>
-    <Column maxWidth={12} paddingLeft="40" fitHeight position="sticky" top="80" gap="16" hide="m">
-      <Row
-        gap="12"
-        paddingLeft="2"
-        vertical="center"
-        onBackground="neutral-medium"
-        textVariant="label-default-s"
-      >
-        <Icon name="document" size="xs" />
-        On this page
       </Row>
-      <HeadingNav fitHeight/>
-    </Column>
+      <Column
+        maxWidth={12}
+        paddingLeft="40"
+        fitHeight
+        position="sticky"
+        top="80"
+        gap="16"
+        m={{ hide: true }}
+      >
+        <Row
+          gap="12"
+          paddingLeft="2"
+          vertical="center"
+          onBackground="neutral-medium"
+          textVariant="label-default-s"
+        >
+          <Icon name="document" size="xs" />
+          On this page
+        </Row>
+        <HeadingNav fitHeight />
+      </Column>
     </Row>
   );
 }
