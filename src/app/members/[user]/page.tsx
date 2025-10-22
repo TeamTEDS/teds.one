@@ -57,7 +57,7 @@ export async function generateMetadata({
   }
 
   const title = `${person.firstName} @ TEDS`;
-  const description = `Meet ${person.name}, ${person.role.toLowerCase()} at TEDS`;
+  const description = `${person.name}, ${person.role} at TEDS`;
   const ogImage = `/api/og/members?user=${encodeURIComponent(user)}`;
 
   return Meta.generate({

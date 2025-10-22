@@ -59,8 +59,8 @@ export async function GET(request: Request) {
           src={baseURL + person.avatar}
           alt={person.name}
           style={{
-            width: "100%",
-            height: "100%",
+            width: "400px",
+            height: "400px",
             objectFit: "cover",
             borderRadius: "1rem",
           }}
