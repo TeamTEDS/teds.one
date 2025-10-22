@@ -1,8 +1,10 @@
 import { people } from '@/resources/content';
-import { Column, Row, Text, Avatar, Button, IconButton, Flex, RevealFx } from '@once-ui-system/core';
+import { Column, Row, Text, Avatar, Button, IconButton, Flex, RevealFx, Meta } from '@once-ui-system/core';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import React from "react";
 import { CustomMDX } from '@/components';
+import { baseURL } from '@/resources';
 import fs from 'node:fs';
 import path from 'node:path';
 import styles from "@/components/about/about.module.scss";
@@ -38,6 +40,33 @@ export async function generateStaticParams(): Promise<{ user: string }[]> {
   return people.map((person) => ({
     user: person.firstName.toLowerCase(),
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ user: string }>;
+}): Promise<Metadata> {
+  const { user } = await params;
+  const person = people.find(
+    (p) => p.firstName.toLowerCase() === user.toLowerCase()
+  );
+
+  if (!person) {
+    return {};
+  }
+
+  const title = `${person.firstName} @ TEDS`;
+  const description = `Meet ${person.name}, ${person.role.toLowerCase()} at TEDS`;
+  const ogImage = `/api/og/members?user=${encodeURIComponent(user)}`;
+
+  return Meta.generate({
+    title,
+    description,
+    baseURL: baseURL,
+    image: ogImage,
+    path: `/members/${person.firstName.toLowerCase()}`,
+  });
 }
 
 export default async function MemberPage({ params }: MemberPageProps) {
