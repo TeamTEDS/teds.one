@@ -230,6 +230,7 @@ export default function About() {
                       {people.map(
                         (member) => member.name && (
                                         <Card 
+                                          href={`/members/${member.firstName.toLowerCase()}`}
                                           radius="l-4" 
                                           direction="column" 
                                           border="neutral-alpha-medium"
