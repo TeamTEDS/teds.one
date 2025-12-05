@@ -1,5 +1,5 @@
 import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
-import { Line, Logo, Row, Text } from "@once-ui-system/core";
+import { Line, Row, Text } from "@once-ui-system/core";
 
 const dov = {
   id: 0,
@@ -20,21 +20,25 @@ const dov = {
     name: "GitHub",
     icon: "github",
     link: "https://github.com/dovydasteds",
+    essential: true,
   },
   {
     name: "YouTube",
     icon: "youtube",
     link: "https://youtube.com/@dovydasteds",
+    essential: true,
   },
   {
     name: "TikTok",
     icon: "tiktok",
     link: "https://tiktok.com/@dovydasteds",
+    essential: true,
   },
   {
     name: "Email",
     icon: "email",
-    link: `mailto:dovydas@teds.one`,
+    link: "mailto:dovydas@teds.one",
+    essential: true,
   },
 ],
 };
@@ -58,16 +62,19 @@ const ned = {
     name: "YouTube",
     icon: "youtube",
     link: "https://youtube.com/",
+    essential: true,
   },
   {
     name: "TikTok",
     icon: "tiktok",
     link: "https://tiktok.com/@ned_puzon2",
+    essential: true,
   },
   {
     name: "Email",
     icon: "email",
-    link: `mailto:ned@teds.one`,
+    link: "mailto:ned@teds.one",
+    essential: true,
   },
 ],
 };
@@ -104,15 +111,18 @@ const newsletter: Newsletter = {
 const social: Social = [
   // Links are automatically displayed.
   // Import new icons in /once-ui/icons.ts
+  // Set essentials: true for links you want to show on the about page
   {
     name: "GitHub",
     icon: "github",
     link: "https://github.com/teamteds",
+    essential: true,
   },
   {
     name: "Discord",
     icon: "discord",
     link: "https://discord.gg/sFDuP7zyFj",
+    essential: true,
   },
 ];
 
@@ -287,7 +297,7 @@ const about: About = {
             height: 9,
           },
         ],
-      },  
+      },
     ],
   },
 };

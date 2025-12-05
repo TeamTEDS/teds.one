@@ -172,11 +172,13 @@ export default function About() {
                 fitWidth
                 data-border="rounded"
               >
-                  {social.map(
-                    (item) =>
-                      item.link && (
-                        <React.Fragment key={item.name}>
-                          <Row s={{ hide: true }}>
+                {social
+                      .filter((item) => item.essential)
+                      .map(
+                  (item) =>
+                    item.link && (
+                      <React.Fragment key={item.name}>
+                        <Row s={{ hide: true }}>
                           <Button
                                 key={item.name}
                               href={item.link}
@@ -265,7 +267,7 @@ export default function About() {
                           >
                             {member.socials.length > 0 && (
                               <Flex className={styles.blockAlign} paddingTop="2" paddingBottom="2" gap="2" wrap horizontal="center" fitWidth data-border="rounded">
-                                {member.socials.map(
+                                {member.socials.filter((item) => item.essential).map(
                                   (item) => item.link && (
                                     <React.Fragment key={item.name}>
                                       <Row s={{ hide: true }}>
